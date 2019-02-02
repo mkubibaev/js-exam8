@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import axios from '../../axios-quotes';
 import QuoteForm from "../../comonents/QuoteForm/QuoteForm";
+import {CATEGORIES} from "../../constants";
 
 class AddQuote extends Component {
     state = {
         quote: '',
-        author: ''
+        author: '',
+        category: 'game-of-thrones'
     };
 
     valueChanged = event => {
@@ -35,6 +37,8 @@ class AddQuote extends Component {
                 <QuoteForm
                     quote={this.state.quote}
                     author={this.state.author}
+                    selectedcategory={this.state.category}
+                    categories={CATEGORIES}
                     changed={this.valueChanged}
                     submitted={this.submitHandler}
                 />
