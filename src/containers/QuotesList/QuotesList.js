@@ -9,7 +9,7 @@ class QuotesList extends Component {
         quotes: null
     };
 
-    loadData() {
+    loadData = () => {
         let url = '/quotes.json';
         const categoryId = this.props.match.params.categoryId;
 
@@ -18,30 +18,48 @@ class QuotesList extends Component {
         }
 
         axios.get(url).then(response => {
-            const quotes = Object.keys(response.data).map(id => {
-                return {...response.data[id], id}
-            });
+            if (response.data) {
+                const quotes = Object.keys(response.data).map(id => {
+                    return {...response.data[id], id}
+                });
 
-            this.setState({quotes});
+                this.setState({quotes});
+            } else {
+                this.setState({quotes: null});
+                //обновляю стейт после удалении последнего элемента
+            }
         })
-    }
+    };
+
+    deleteHandler = id => {
+        if (window.confirm('Are you sure?')) {
+            axios.delete('/quotes/' + id + '.json').then(this.loadData).catch(error => {
+                console.log(error);
+            })
+        }
+    };
 
     componentDidMount() {
         this.loadData();
-    }
+    };
 
     componentDidUpdate(prevProps) {
         if (this.props.match.params.categoryId !== prevProps.match.params.categoryId) {
             this.loadData();
         }
-    }
+    };
 
     render() {
         let quotes = null;
 
         if (this.state.quotes) {
             quotes = this.state.quotes.map(quote => (
-                <Quote key={quote.id} text={quote.text} author={quote.author}/>
+                <Quote
+                    key={quote.id}
+                    text={quote.text}
+                    author={quote.author}
+                    onDelete={() => this.deleteHandler(quote.id)}
+                />
             ))
         }
 
