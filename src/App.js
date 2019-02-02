@@ -12,7 +12,8 @@ class App extends Component {
                     <Header/>
                     <Switch>
                         <Route path='/' exact component={QuotesList}/>
-                        <Route path='/add' exact component={AddQuote}/>
+                        <Route path='/add' component={AddQuote}/>
+                        <Route path='/quotes/:categoryId' component={QuotesList}/>
                         <Route render={() => <h2>Not found</h2>}/>
                     </Switch>
                 </Fragment>

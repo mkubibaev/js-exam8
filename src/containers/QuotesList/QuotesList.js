@@ -10,7 +10,14 @@ class QuotesList extends Component {
     };
 
     loadData() {
-        axios.get('/quotes.json').then(response => {
+        let url = '/quotes.json';
+        const categoryId = this.props.match.params.categoryId;
+
+        if(categoryId) {
+            url += `?orderBy="category"&equalTo="${categoryId}"`
+        }
+
+        axios.get(url).then(response => {
             const quotes = Object.keys(response.data).map(id => {
                 return {...response.data[id], id}
             });
@@ -23,12 +30,18 @@ class QuotesList extends Component {
         this.loadData();
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.categoryId !== prevProps.match.params.categoryId) {
+            this.loadData();
+        }
+    }
+
     render() {
         let quotes = null;
 
         if (this.state.quotes) {
             quotes = this.state.quotes.map(quote => (
-                <Quote key={quote.id} quote={quote.quote} author={quote.author}/>
+                <Quote key={quote.id} text={quote.text} author={quote.author}/>
             ))
         }
 

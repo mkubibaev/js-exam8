@@ -5,7 +5,7 @@ import {CATEGORIES} from "../../constants";
 
 class AddQuote extends Component {
     state = {
-        quote: '',
+        text: '',
         author: '',
         category: 'game-of-thrones'
     };
@@ -18,9 +18,7 @@ class AddQuote extends Component {
     submitHandler = event => {
         event.preventDefault();
 
-        console.log(this.state);
-
-        if (this.state.quote && this.state.author) {
+        if (this.state.text && this.state.author) {
 
             axios.post('/quotes.json', this.state).then(() => {
                 this.props.history.replace('/');
@@ -35,7 +33,7 @@ class AddQuote extends Component {
             <div className="container py-4">
                 <h3 className="text-center">Add new quote</h3>
                 <QuoteForm
-                    quote={this.state.quote}
+                    text={this.state.text}
                     author={this.state.author}
                     selectedcategory={this.state.category}
                     categories={CATEGORIES}

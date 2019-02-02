@@ -4,7 +4,7 @@ const Quote = props => {
     return (
         <div className="card mb-3">
             <div className="card-body">
-                <p><i>{props.quote}</i></p>
+                <p><i>{props.text}</i></p>
                 <span>- {props.author}</span>
             </div>
             <div className="card-footer text-right">

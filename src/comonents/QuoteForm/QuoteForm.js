@@ -7,8 +7,8 @@ const QuoteForm = props => {
                 <div className="form-group col-12">
                     <label>Quote:</label>
                     <textarea className="form-control"
-                              name="quote"
-                              value={props.quote}
+                              name="text"
+                              value={props.text}
                               onChange={props.changed}
                     />
                 </div>
