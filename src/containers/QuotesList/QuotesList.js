@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import axios from '../../axios-quotes';
+import {CATEGORIES} from "../../constants";
 import Quote from "../../comonents/Quote/Quote";
+import Categories from "../../comonents/Categories/Categories";
 
 class QuotesList extends Component {
     state = {
@@ -31,10 +33,10 @@ class QuotesList extends Component {
         }
 
         return (
-            <div className="container py-3">
+            <div className="container py-5">
                 <div className="row">
                     <div className="col-12 col-md-4">
-                        <div>categories</div>
+                        <Categories list={CATEGORIES}/>
                     </div>
                     <div className="col-12 col-md-8">
                         {quotes}

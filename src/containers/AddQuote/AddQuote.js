@@ -32,7 +32,7 @@ class AddQuote extends Component {
 
     render() {
         return (
-            <div className="container py-3">
+            <div className="container py-4">
                 <h3 className="text-center">Add new quote</h3>
                 <QuoteForm
                     quote={this.state.quote}
