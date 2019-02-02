@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavLink} from "react-router-dom";
 
 const Quote = props => {
     return (
@@ -8,7 +9,7 @@ const Quote = props => {
                 <span>- {props.author}</span>
             </div>
             <div className="card-footer text-right">
-                <button type="button" className="btn btn-sm btn-secondary mr-1">Edit</button>
+                <NavLink to={'/quotes/' + props.id + '/edit'} className="btn btn-sm btn-secondary mr-1">Edit</NavLink>
                 <button onClick={props.onDelete} type="button" className="btn btn-sm btn-danger">Delete</button>
             </div>
         </div>

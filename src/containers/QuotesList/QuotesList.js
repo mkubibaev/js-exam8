@@ -56,6 +56,7 @@ class QuotesList extends Component {
             quotes = this.state.quotes.map(quote => (
                 <Quote
                     key={quote.id}
+                    id={quote.id}
                     text={quote.text}
                     author={quote.author}
                     onDelete={() => this.deleteHandler(quote.id)}
