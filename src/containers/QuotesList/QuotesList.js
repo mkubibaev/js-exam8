@@ -6,7 +6,8 @@ import Categories from "../../comonents/Categories/Categories";
 
 class QuotesList extends Component {
     state = {
-        quotes: null
+        quotes: null,
+        categories: null
     };
 
     loadData = () => {
@@ -17,7 +18,7 @@ class QuotesList extends Component {
             url += `?orderBy="category"&equalTo="${categoryId}"`
         }
 
-        axios.get(url).then(response => {
+        return axios.get(url).then(response => {
             if (response.data) {
                 const quotes = Object.keys(response.data).map(id => {
                     return {...response.data[id], id}
@@ -31,28 +32,58 @@ class QuotesList extends Component {
         })
     };
 
+    getCategoriesCount = () => {
+        const categories = [...CATEGORIES];
+
+        categories.forEach(category => {
+            category.count = 0;
+        });
+
+        axios.get('/quotes.json').then(response => {
+            if(response.data) {
+                Object.keys(response.data).forEach(id => {
+                    const quote = response.data[id];
+
+                    for (let i = 0; i < categories.length; i++) {
+                        if (categories[i].id === quote.category) {
+                            categories[i].count++;
+                        }
+                    }
+                });
+
+                this.setState({categories});
+
+            } else {
+                this.setState({categories});
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
     deleteHandler = id => {
         if (window.confirm('Are you sure?')) {
-            axios.delete('/quotes/' + id + '.json').then(this.loadData).catch(error => {
-                console.log(error);
-            })
-        }
+            axios.delete('/quotes/' + id + '.json')
+                .then(this.loadData)
+                .then(this.getCategoriesCount)
+            }
     };
 
     componentDidMount() {
-        this.loadData();
+        this.loadData().then(this.getCategoriesCount);
     };
 
     componentDidUpdate(prevProps) {
         if (this.props.match.params.categoryId !== prevProps.match.params.categoryId) {
-            this.loadData();
+            this.loadData().then(this.getCategoriesCount);
         }
     };
 
     render() {
-        let quotes = null;
 
-        if (this.state.quotes) {
+        let quotes = <h5>No quotes</h5>;
+
+        if (this.state.quotes && this.state.quotes.length) {
             quotes = this.state.quotes.map(quote => (
                 <Quote
                     key={quote.id}
@@ -68,7 +99,7 @@ class QuotesList extends Component {
             <div className="container py-5">
                 <div className="row">
                     <div className="col-12 col-md-4">
-                        <Categories list={CATEGORIES}/>
+                        {this.state.categories ? <Categories list={this.state.categories}/> : null}
                     </div>
                     <div className="col-12 col-md-8">
                         {quotes}
